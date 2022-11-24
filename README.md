@@ -32,7 +32,7 @@ Checkout [Install MatrixOne](https://docs.matrixorigin.io/0.4.0/MatrixOne/Get-St
 
 Or you can launch whatever database software as you want. 
 
-### 2. Fork and clone this mo-tpch project. 
+### 2. Fork and clone this mo-sysbench project. 
 
 ### 3. Run the test.
 
