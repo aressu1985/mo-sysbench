@@ -32,7 +32,10 @@ end
 function thread_init()
    drv = sysbench.sql.driver()
    con = drv:connect()
-
+   local rs = con:query("select connection_id()")
+   for i = 1, rs.nrows do
+     print(string.format("open connection id: %s\n", unpack(rs:fetch_row(), 1, rs.nfields)))
+   end
    local points = string.rep("?, ", sysbench.opt.random_points - 1) .. "?"
 
    stmt = con:prepare(string.format([[
@@ -55,6 +58,10 @@ end
 
 function thread_done()
    stmt:close()
+   local rs = con:query("select connection_id()")
+   for i = 1, rs.nrows do
+     print(string.format("close connection id: %s\n", unpack(rs:fetch_row(), 1, rs.nfields)))
+   end
    con:disconnect()
 end
 

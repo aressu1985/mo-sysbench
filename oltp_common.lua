@@ -82,6 +82,11 @@ function cmd_prepare()
    local drv = sysbench.sql.driver()
    local con = drv:connect()
 
+   local rs = con:query("select connection_id()")
+   for i = 1, rs.nrows do
+     print(string.format("open connection id: %s\n", unpack(rs:fetch_row(), 1, rs.nfields)))
+   end
+
    for i = sysbench.tid % sysbench.opt.threads + 1, sysbench.opt.tables,
    sysbench.opt.threads do
      create_table(drv, con, i)
@@ -339,6 +344,11 @@ function thread_init()
    drv = sysbench.sql.driver()
    con = drv:connect()
 
+   local rs = con:query("select connection_id()")
+   for i = 1, rs.nrows do
+     print(string.format("open connection id: %s\n", unpack(rs:fetch_row(), 1, rs.nfields)))
+   end
+
    -- Create global nested tables for prepared statements and their
    -- parameters. We need a statement and a parameter set for each combination
    -- of connection/table/query
@@ -371,6 +381,10 @@ end
 
 function thread_done()
    close_statements()
+   local rs = con:query("select connection_id()")
+   for i = 1, rs.nrows do
+     print(string.format("close connection id: %s\n", unpack(rs:fetch_row(), 1, rs.nfields)))
+   end
    con:disconnect()
 end
 

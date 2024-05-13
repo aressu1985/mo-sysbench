@@ -40,6 +40,10 @@ end
 
 function thread_done(thread_9d)
    con:bulk_insert_done()
+   local rs = con:query("select connection_id()")
+   for i = 1, rs.nrows do
+     print(string.format("close connection id: %s\n", unpack(rs:fetch_row(), 1, rs.nfields)))
+   end
    con:disconnect()
 end
 
